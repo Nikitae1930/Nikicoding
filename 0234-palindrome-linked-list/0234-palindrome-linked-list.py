@@ -5,14 +5,30 @@
 #         self.next = next
 class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
-        self.head = head
-        data = self.appendList()
-        return data == data[::-1]
+        slow, fast = head, head 
 
-    def appendList(self):
-        nums = list()
-        cur_node = self.head
-        while cur_node:
-            nums.append(cur_node.val)
-            cur_node = cur_node.next
-        return nums
+        # Finding Midpoint 
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next 
+        
+        prev, curr = None, slow 
+
+        # Reversing the second half 
+        while curr:
+            nxt = curr.next 
+            curr.next = prev 
+            prev = curr
+            curr = nxt 
+        
+        first_half, reversed_half = head, prev 
+
+        # Checking if it's palidrome?
+        while first_half and reversed_half:
+            if first_half.val != reversed_half.val:
+                return False 
+            
+            first_half = first_half.next 
+            reversed_half = reversed_half.next 
+        
+        return True 
